@@ -47,6 +47,22 @@ chrome.runtime.onMessage.addListener(
 				}
 			 } );
 		}
+		if( request.message === "totungviolet" ) {
+			chrome.tabs.query({}, function(tabs) { 
+				for(i = 0; i<tabs.length; i++){
+					if(tabs[i].title.indexOf('tungviolet.com') != -1) {
+						chrome.tabs.sendMessage(tabs[i].id, {"message": "totungviolet",
+							"textvi" : request.textvi, 
+							"texten" : request.texten, 
+							"hiragana" : request.hiragana, 
+							"kanji" : request.kanji, 
+							"ex" : request.ex
+						});
+						break;
+					}
+				}
+			 } );
+		}
 	}
 
 );

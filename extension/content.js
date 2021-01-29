@@ -51,15 +51,15 @@ function copyTextToClipboard(text) {
 
   document.body.removeChild(textArea);
 }
-var itemjson = {"jp": "", "jp1": "", "en": "", "vn": "","sen": ""};
+var itemjson = {"hiragana": "", "kanji": "", "en": "", "vn": "","ex": ""};
 $(document).on('dblclick', '.concept_light-representation', function(){
 	var string = $(this).find('.furigana').text().trim() + '\t' + $(this).find('.text').text().trim() + 
 			'\t' +$(this).parents('.concept_light').find('.meaning-meaning').eq(0).text().trim();
-	itemjson = {jp: $(this).find('.furigana').text().trim(),
-				jp1 : $(this).find('.text').text().trim(),
+	itemjson = {hiragana: $(this).find('.furigana').text().trim(),
+				kanji : $(this).find('.text').text().trim(),
 				en : $(this).parents('.concept_light').find('.meaning-meaning').eq(0).text().trim(),
 				vn: "",
-				sen : $('#keyword').val().trim(), 
+				ex : $('#keyword').val().trim(), 
 			}
 	$('#texttran').val('');
 	var url = 'https://translate.google.com/#view=home&op=translate&sl=en&tl=vi&text='+ $(this).parents('.concept_light').find('.meaning-meaning').eq(0).text().trim();
@@ -87,9 +87,10 @@ $('#video').on('pause', function() {
 });
 
 if (window.location.hostname == "translate.google.com") {
-	setInterval(function () {
-		var en = $('#source').val();
-		var vi = $('.result-shield-container').text();
+	setTimeout(function () {
+
+		var en = $('textarea').first().val();
+		var vi = $('.VIiyi>span>span').text();
 		chrome.runtime.sendMessage({"message": "texttran", "textvi": vi, "texten": en,});
 	}, 1000);
 }
@@ -105,13 +106,16 @@ if (window.location.hostname == "jisho.org") {
 
 	$('BODY').append('<div style="position: fixed; left: 0; bottom: 0; width: 100%; font-size: 20px;"><button id="confirm">saveItem</button><button id="saveLocal">save</button><button id="getjson">getjsonfile</button><button id="clearjson">clear</button><textarea style="font-size: 20px;" id="texttran"  rows="4" cols="50"></textarea></div>')
 	$('#confirm').click(function(){
-		var i;
-		for (i = 0; i < json.length; i++) {
-		   if (json[i].jp1 == itemjson.jp1){
-		   		return;
-		   } 
-		}
-		json.push(itemjson);
+		chrome.runtime.sendMessage({"message": "totungviolet", "textvi": itemjson.vn, "texten": itemjson.en,
+			'hiragana': itemjson.hiragana, 'kanji': itemjson.kanji, 'ex' : itemjson.ex
+		});
+		// var i;
+		// for (i = 0; i < json.length; i++) {
+		//    if (json[i].jp1 == itemjson.jp1){
+		//    		return;
+		//    } 
+		// }
+		// json.push(itemjson);
 
 		// chrome.storage.local.get(['json'], function(data) {
 		// 	console.log(data, 'tung1');
@@ -145,9 +149,16 @@ if (window.location.hostname == "jisho.org") {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if( request.message === "texttran" && itemjson.en == request.texten) {
-    	$('#texttran').val(itemjson.jp1 + '\n' + request.texten + '\n' + request.textvi);
+    	$('#texttran').val(itemjson.kanji + '\n' + request.texten + '\n' + request.textvi);
     	itemjson.vn = request.textvi;
       //alert(request.text)
+    }
+    if( request.message === "totungviolet") {
+    	$('textarea').eq(0).val(request.textvi);
+    	$('textarea').eq(1).val(request.texten);
+    	$('textarea').eq(2).val(request.hiragana);
+    	$('textarea').eq(3).val(request.kanji);
+    	$('textarea').eq(4).val(request.ex);
     }
   }
 );

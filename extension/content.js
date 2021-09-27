@@ -160,7 +160,7 @@ if (window.location.hostname == "jisho.org") {
 		  }
 		  if (e.which == '13') {
 		  	if(el.find('a').hasClass('current')) {
-		  		$('.concept_light-representation').dblclick();
+		  		$('.concept_light-representation').first().dblclick();
 		  	} else {
 					el.find('a')[0].click();
 		  	}

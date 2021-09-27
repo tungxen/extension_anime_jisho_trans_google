@@ -171,7 +171,7 @@ if (window.location.hostname == "jisho.org") {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if( request.message === "texttran" && itemjson.en == request.texten) {
-    	$('#texttran').val(itemjson.kanji + '\n' + request.texten + '\n' + request.textvi);
+    	$('#texttran').val(request.textvi + '\n' + request.texten + '\n' + itemjson.kanji);
     	itemjson.vn = request.textvi;
       //alert(request.text)
     }

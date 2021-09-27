@@ -109,28 +109,6 @@ if (window.location.hostname == "jisho.org") {
 		chrome.runtime.sendMessage({"message": "totungviolet", "textvi": itemjson.vn, "texten": itemjson.en,
 			'hiragana': itemjson.hiragana, 'kanji': itemjson.kanji, 'ex' : itemjson.ex
 		});
-		// var i;
-		// for (i = 0; i < json.length; i++) {
-		//    if (json[i].jp1 == itemjson.jp1){
-		//    		return;
-		//    } 
-		// }
-		// json.push(itemjson);
-
-		// chrome.storage.local.get(['json'], function(data) {
-		// 	console.log(data, 'tung1');
-		// });
-		// chrome.storage.local.get(['json1'], function(data) {
-		//     	json = data.json;
-		//  });
-
-		// console.log(json);
-		// if (!Array.isArray(json)) {
-		// 	json = [];
-		// }
-		// json.push(itemjson);
-		// chrome.storage.local.set({'json1': json});
-		// console.log(json);
 	});
 	$('#getjson').click(function(){
 		download('jp.json', JSON.stringify(json));
@@ -143,6 +121,50 @@ if (window.location.hostname == "jisho.org") {
 	$('#saveLocal').click(function(){
 		chrome.storage.local.set({'json': json});
 	});
+	
+	let indexcurrent = 1;
+	var el_zen_bar = $('#zen_bar');
+	var el = el_zen_bar.find('li:nth-child(' + indexcurrent + ')');
+	$(document.body).keydown(function(e) {
+		if (e.target.tagName == 'BODY' || e.target.tagName == 'A') {
+		  var allel = el_zen_bar.find('li');
+		  var arrow = { left: 37, up: 38, right: 39, down: 40 };
+		  switch (e.which) {
+		    case arrow.left:
+		      if(indexcurrent > 1) {
+		      	indexcurrent--;
+		      }
+		    	el = el_zen_bar.find('li:nth-child(' + indexcurrent + ')');
+					allel.removeAttr("style");
+		    	if(el.length) {
+						el.css('font-size', '1.9em');
+		    	}
+		      break;
+		    case arrow.up:
+		      //..
+		      break;
+		    case arrow.right:
+		      indexcurrent++;
+		    	el = el_zen_bar.find('li:nth-child(' + indexcurrent + ')');
+					allel.removeAttr("style");
+					if(el.length) {
+						el.css('font-size', '1.9em');
+		    	}
+		      
+		      break;
+		    case arrow.down:
+		      //..
+		      break;
+		  }
+		}
+	  if (e.which == '13') {
+	  	if(el.find('a').hasClass('current')) {
+	  		$('.concept_light-representation').dblclick();
+	  	} else {
+				el.find('a')[0].click();
+	  	}
+	  }
+});
 } 
 
 

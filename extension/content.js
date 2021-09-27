@@ -80,7 +80,7 @@ $('#video').on('pause', function() {
   //Actions when video pause selected
   	var sub = $('#targettrack').text();
   	if (sub.trim() != '') {
-  		var url = 'https://jisho.org/search/' + sub.trim();
+  		var url = 'https://jisho.org/search/' + encodeURIComponent(sub.trim());
 		chrome.runtime.sendMessage({"message": "sub", "url": url});
 		//chrome.runtime.sendMessage({"message": "sub", "url": 'https://jisho.org/search/'});
   	}

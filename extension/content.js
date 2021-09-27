@@ -158,14 +158,14 @@ if (window.location.hostname == "jisho.org") {
 		      //..
 		      break;
 		  }
+		  if (e.which == '13') {
+		  	if(el.find('a').hasClass('current')) {
+		  		$('.concept_light-representation').dblclick();
+		  	} else {
+					el.find('a')[0].click();
+		  	}
+		  }
 		}
-	  if (e.which == '13') {
-	  	if(el.find('a').hasClass('current')) {
-	  		$('.concept_light-representation').dblclick();
-	  	} else {
-				el.find('a')[0].click();
-	  	}
-	  }
 });
 } 
 

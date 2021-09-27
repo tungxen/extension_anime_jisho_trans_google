@@ -122,12 +122,12 @@ if (window.location.hostname == "jisho.org") {
 		chrome.storage.local.set({'json': json});
 	});
 	
-	let indexcurrent = 1;
 	var el_zen_bar = $('#zen_bar');
+	var allel = el_zen_bar.find('li');
+	let indexcurrent = parseInt(allel.length/2);
 	var el = el_zen_bar.find('li:nth-child(' + indexcurrent + ')');
 	$(document.body).keydown(function(e) {
 		if (e.target.tagName == 'BODY' || e.target.tagName == 'A') {
-		  var allel = el_zen_bar.find('li');
 		  var arrow = { left: 37, up: 38, right: 39, down: 40 };
 		  switch (e.which) {
 		    case arrow.left:
@@ -144,7 +144,9 @@ if (window.location.hostname == "jisho.org") {
 		      //..
 		      break;
 		    case arrow.right:
-		      indexcurrent++;
+		      if(indexcurrent < allel.length) {
+		      	indexcurrent++;
+		      }
 		    	el = el_zen_bar.find('li:nth-child(' + indexcurrent + ')');
 					allel.removeAttr("style");
 					if(el.length) {
